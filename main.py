@@ -79,7 +79,7 @@ df_fighters['Date'] = pd.to_datetime(df_fighters['Date'], errors='coerce')
 df_fights['Date'] = pd.to_datetime(df_fights['Date'], errors='coerce')
 df_fighters = df_fighters.sort_values(by=["Name","Date"]).reset_index(drop=True)
 
-
+#cosa inutile
 def rename_fights(col):
     if col.startswith("Red"):
         new_col = col.replace("Red", "1", 1)
@@ -104,9 +104,11 @@ df_fights.to_csv("fights.csv",index = False)
 print(df_fighters)
 print(df_fights)
 
-with pd.ExcelWriter("fighters.xlsx", engine='openpyxl') as writer:
-    df_fighters.to_excel(writer, index=False)
+
+#decommentare se si vuole salvare in xlsx (ci mette 15 secondi)
+#with pd.ExcelWriter("fighters.xlsx", engine='openpyxl') as writer:
+   # df_fighters.to_excel(writer, index=False)
 
 
-with pd.ExcelWriter("fights.xlsx", engine='openpyxl') as writer:
-    df_fights.to_excel(writer, index=False)
+#with pd.ExcelWriter("fights.xlsx", engine='openpyxl') as writer:
+    #df_fights.to_excel(writer, index=False)
