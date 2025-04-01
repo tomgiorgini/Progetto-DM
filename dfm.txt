@@ -18,8 +18,7 @@ Dimensions:
               BetterRank
 -Results: Finish -> FinishDetails + FinishRound -> FinishRoundTime -> TotalFightTimeSecs
 -Odds: RedOdds -> RedDecOdds + RKOOdds + RSubOdds, RedExpectedValue
-         
-        BlueOdds -> BlueDecOdds + BKOOdds + BSubOdds, BlueExpectedValue
+       BlueOdds -> BlueDecOdds + BKOOdds + BSubOdds, BlueExpectedValue
 
 
 FIGHTERS:
@@ -40,3 +39,5 @@ Dimensions:
             Losses
             Draws
 -Rank: All ranks
+-stats: AvgSigStrLanded,AvgSigStrPct,AvgSubAtt,AvgTDLanded,AvgTDPct + quelle del dataset 2
+-opponents stats: tutte del dataset 2
