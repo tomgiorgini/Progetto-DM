@@ -79,6 +79,9 @@ df_fights = df_fights.copy()  # crea una copia indipendente
 df_fights['Date'] = pd.to_datetime(df_fights['Date'], errors='coerce')
 df_fighters = df_fighters.sort_values(by=["Name","Date"]).reset_index(drop=True)
 
+df_fighters['WinsByDecision'] = df_fighters['WinsByDecisionMajority'] + df_fighters['WinsByDecisionSplit'] + df_fighters['WinsByDecisionUnanimous'] 
+df_fighters['WinsByStoppage'] = df_fighters['WinsByKO'] + df_fighters['WinsBySubmission'] + df_fighters['WinsByTKODoctorStoppage']
+
 df_fights_col = df_fights.columns.tolist()
 df_fighters_col = df_fighters.columns.tolist()
 df_fights_types = df_fights.dtypes

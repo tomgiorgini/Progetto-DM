@@ -1,0 +1,42 @@
+FIGHTS:
+
+Attributes:
+
+RedFighter      \
+BlueFighter     \  PK
+Date            \
+Location 
+Country
+
+
+Dimensions:
+
+-Fight type: title bout, gender -> WeightClass, number of rounds, EmptyArena
+-Differences: win/Loss dif: WinStreakDif -> LongestWinStreakDif, LoseStreakDif, WinDif -> KODif + SubDif, LossDif, TotalRoundDif, TotalTitleBoutDif
+              physical dif: HeightDif, ReachDif, AgeDif
+              stats dif: SigStrDif, AvgSubAttDif, AvgTDDif
+              BetterRank
+-Results: Finish -> FinishDetails + FinishRound -> FinishRoundTime -> TotalFightTimeSecs
+-Odds: RedOdds -> RedDecOdds + RKOOdds + RSubOdds, RedExpectedValue
+         
+        BlueOdds -> BlueDecOdds + BKOOdds + BSubOdds, BlueExpectedValue
+
+
+FIGHTERS:
+
+Attributes:
+
+Name    \ 
+        \   PK
+Date    \
+Gender
+
+Dimensions: 
+
+-physical stats: Stance, HeightCms, ReachCms, WeightLbs, Age
+-win/loss:  wins
+            |____->    WinsByDecision -> WinsByDecisionMajority + WinsByDecisionSplit + WinsByDecisionUnanimous, 
+            |____->    WinsByStoppage -> WinsByKO + WinsBySubmission + WinsByTKODoctorStoppage
+            Losses
+            Draws
+-Rank: All ranks
