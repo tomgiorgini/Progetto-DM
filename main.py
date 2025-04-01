@@ -1,7 +1,7 @@
 import pandas as pd
 
 # Path to the CSV file
-file_path = 'progetto-DM/ufc-master.csv'
+file_path = 'ufc-master.csv'
 
 df = pd.read_csv(file_path)
 
@@ -70,39 +70,27 @@ def rename_red(col):
     return new_col
 
 
-# Applichiamo le funzioni di rinomina:
 df_blue = df_blue_fighter.rename(columns=lambda x: rename_blue(x))
 df_red = df_red_fighter.rename(columns=lambda x: rename_red(x))
 df_fighters = pd.concat([df_red, df_blue], ignore_index=True)
 
 df_fighters['Date'] = pd.to_datetime(df_fighters['Date'], errors='coerce')
+df_fights = df_fights.copy()  # crea una copia indipendente
 df_fights['Date'] = pd.to_datetime(df_fights['Date'], errors='coerce')
 df_fighters = df_fighters.sort_values(by=["Name","Date"]).reset_index(drop=True)
 
-#cosa inutile
-def rename_fights(col):
-    if col.startswith("Red"):
-        new_col = col.replace("Red", "1", 1)
-    elif col.startswith("Blue"):
-        new_col = col.replace("Blue", "2", 1)
-    else: 
-        new_col = col
-    if new_col.startswith("R") and new_col != "ReachDif":
-        new_col = new_col.replace("R","1", 1)
-    if new_col.startswith("B") and new_col != "BetterRank":
-        new_col = new_col.replace("B","2", 1)
-    return new_col
-
-#df_fights= df_fights.rename(columns={'RedFighter': 'Fighter1','BlueFighter': 'Fighter2'})
-#df_fights = df_fights.rename(columns=lambda x: rename_fights(x))
-
+df_fights_col = df_fights.columns.tolist()
+df_fighters_col = df_fighters.columns.tolist()
+df_fights_types = df_fights.dtypes
+df_fighters_types = df_fighters.dtypes
+df_fights_nan = df_fights.isna().any()
+df_fighters_nan = df_fighters.isna().any()
 
 df_fighters.to_csv("fighters.csv",index = False)
 df_fights.to_csv("fights.csv",index = False)
 
-
-print(df_fighters)
-print(df_fights)
+print(df_fighters_col,'\n')
+print(df_fights_col)
 
 
 #decommentare se si vuole salvare in xlsx (ci mette 15 secondi)
