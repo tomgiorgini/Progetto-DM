@@ -6,19 +6,35 @@ RedFighter      \
 BlueFighter     \  PK
 Date            \
 Location 
+Referee
 Country
-
+Winner
 
 Dimensions:
 
--Fight type: title bout, gender -> WeightClass, number of rounds, EmptyArena
--Differences: win/Loss dif: WinStreakDif -> LongestWinStreakDif, LoseStreakDif, WinDif -> KODif + SubDif, LossDif, TotalRoundDif, TotalTitleBoutDif
-              physical dif: HeightDif, ReachDif, AgeDif
-              stats dif: SigStrDif, AvgSubAttDif, AvgTDDif
-              BetterRank
--Results: Finish -> FinishDetails + FinishRound -> FinishRoundTime -> TotalFightTimeSecs
--Odds: RedOdds -> RedDecOdds + RKOOdds + RSubOdds, RedExpectedValue
-       BlueOdds -> BlueDecOdds + BKOOdds + BSubOdds, BlueExpectedValue
+-Fight type:    -> title bout 
+                -> gender -> WeightClass
+                -> number of rounds 
+                -> EmptyArena
+
+-Differences:   -> WinStreakDif -> LongestWinStreakDif
+                -> LoseStreakDif
+                -> WinDif -> (KODif, SubDif)
+                -> LossDif
+                -> TotalRoundDif -> TotalTitleBoutDif
+                -> HeightDif
+                -> ReachDif
+                -> AgeDif
+                -> SigStrDif
+                -> AvgSubAttDif
+                -> AvgTDDif
+                -> BetterRank
+                
+-Results: Finish -> (FinishDetails, FinishRound -> FinishRoundTime -> TotalFightTimeSecs)  
+-Odds: -> RedOdds -> (RedDecOdds, RKOOdds , RSubOdds)
+       -> RedExpectedValue
+       -> BlueOdds -> (BlueDecOdds, BKOOdds, BSubOdds)
+       -> BlueExpectedValue
 
 
 FIGHTERS:
@@ -32,12 +48,37 @@ Gender
 
 Dimensions: 
 
--physical stats: Stance, HeightCms, ReachCms, WeightLbs, Age
--win/loss:  wins
-            |____->    WinsByDecision -> WinsByDecisionMajority + WinsByDecisionSplit + WinsByDecisionUnanimous, 
-            |____->    WinsByStoppage -> WinsByKO + WinsBySubmission + WinsByTKODoctorStoppage
-            Losses
-            Draws
--Rank: All ranks
--stats: AvgSigStrLanded,AvgSigStrPct,AvgSubAtt,AvgTDLanded,AvgTDPct + quelle del dataset 2
--opponents stats: tutte del dataset 2
+-physical stats: 
+        ->Stance
+        ->HeightCms
+        ->ReachCms 
+        ->WeightLbs 
+        ->Age
+
+-Fight Stats:  -> wins -> WinsByDecision ->( WinsByDecisionMajority , WinsByDecisionSplit,  WinsByDecisionUnanimous)
+               |____-> WinsByStoppage -> (WinsByKO , WinsBySubmission , WinsByTKODoctorStoppage)
+            -> Losses
+            -> Draws
+            -> currentwinstreak -> longestwinstreak
+            -> currentlosestreak
+            ->totaltimefought -> totalroundsfought -> totaltitlebouts
+
+-Rank: (ALL OPTIONAL) matchwcrank, bantamweightrank, featherweightrank, flyweightrank,
+    heavyweightrank, lightheavyweightrank, lightweightrank,
+    middleweightrank, pfprank, wbantamweightrank, wfeatherweightrank,
+    wflyweightrank, wstrawweightrank, welterweightrank
+
+-Avgstats: -> avgkd, 
+           -> avgsigstrpct -> avgsigstrlanded --> (avgheadlanded,avgbodylanded,avgleglanded,avgdistancelanded,avgclinchlanded,avggroundlanded)
+                         |_-> avgsigstratt --> (avgheadatt,avgbodyatt,avglegatt,avgdistanceatt,avgclinchatt,avggroundatt)
+
+           -> avgtdpct -> avgtdlanded
+                     |_-> avgtdatt -> (avgsubatt,avgrev,avgctrltime)
+
+-AvgOppStats: ->  avgoppkd
+              ->  avgoppsigstrpct  -> avgoppsigstrlanded 
+                                 -> (avgoppheadlanded, avgoppbodylanded, avgoppleglanded, avgoppdistancelanded, avgoppclinchlanded, avgoppgroundlanded)
+                               |_-> avgoppsigstratt 
+                                 -> (avgoppheadatt, avgoppbodyatt, avgopplegatt, avgoppdistanceatt, avgoppclinchatt, avgoppgroundatt)
+               -> avgopptdpct  -> avgopptdlanded
+                           |_-> avgopptdatt -> (avgoppsubatt, avgopprev, avgoppctrltime)
