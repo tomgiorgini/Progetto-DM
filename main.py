@@ -69,7 +69,72 @@ df2 = df2.rename(columns={'b_draw': 'b_draws', 'r_draw': 'r_draws','b_winbyko/tk
 
 columns = list(sorted(set(df1.columns.tolist()).intersection(df2.columns.tolist())))
 
+columns = [
+    # -- FIGHT-LEVEL (data comune) --
+    'r_fighter',
+    'b_fighter',
+    'date', 
+    'location', 
+    'winner', 
+    'titlebout', 
+    'weightclass',
+    
+    # -- B FIGHTER (dati generali) --
+    
+    'b_age',
+    'b_stance',
+    'b_heightcms',
+    'b_reachcms',
+    'b_weightlbs',
 
+    # -- B FIGHTER (streak, record) --
+    'b_currentlosestreak',
+    'b_currentwinstreak',
+    'b_draws',
+    'b_longestwinstreak',
+    'b_wins',
+    'b_losses',
+    'b_winsbyko',
+    'b_winsbysubmission',
+    'b_winsbytkodoctorstoppage',
+    'b_totalroundsfought',
+    'b_totaltitlebouts',
+
+    # -- B FIGHTER (statistiche) --
+    'b_avgsigstrlanded',
+    'b_avgsigstrpct',
+    'b_avgsubatt',
+    'b_avgtdlanded',
+    'b_avgtdpct',
+
+    # -- R FIGHTER (dati generali) --
+    
+    'r_age',
+    'r_stance',
+    'r_heightcms',
+    'r_reachcms',
+    'r_weightlbs',
+
+    # -- R FIGHTER (streak, record) --
+    'r_currentlosestreak',
+    'r_currentwinstreak',
+    'r_draws',
+    'r_longestwinstreak',
+    'r_wins',
+    'r_losses',
+    'r_winsbyko',
+    'r_winsbysubmission',
+    'r_winsbytkodoctorstoppage',
+    'r_totalroundsfought',
+    'r_totaltitlebouts',
+
+    # -- R FIGHTER (statistiche) --
+    'r_avgsigstrlanded',
+    'r_avgsigstrpct',
+    'r_avgsubatt',
+    'r_avgtdlanded',
+    'r_avgtdpct'
+]
 df_final = pd.DataFrame()
 
 df_final['RedFighter'] = df1['r_fighter']
@@ -159,7 +224,7 @@ ordered_cols = [
 df1 = df1.sort_values(by=["date","r_fighter"]).reset_index(drop=True)
 df2 = df2.sort_values(by=["date","r_fighter"]).reset_index(drop=True)
 
-df1['country'] = None
+df1.drop(columns=('country'))
 
 df = pd.DataFrame(columns=ordered_cols)
 
@@ -172,10 +237,90 @@ for col in df1.select_dtypes(include='int'):
 for col in df2.select_dtypes(include='int'):
     df2[col] = df2[col].astype(float)
 
-key_cols = ['r_fighter', 'b_fighter', 'date','winner','location','weightclass','titlebout']
+columns_to_update = [
+    # Fight-level
+    'location', 'winner', 'titlebout', 'weightclass',
+    
+    # B fighter (dati generali)
+    'b_age','b_stance','b_heightcms','b_reachcms','b_weightlbs',
+
+    # B fighter (streak, record)
+    'b_currentlosestreak','b_currentwinstreak','b_draws','b_longestwinstreak','b_wins','b_losses',
+    'b_winsbyko','b_winsbysubmission','b_winsbytkodoctorstoppage','b_totalroundsfought','b_totaltitlebouts',
+
+    # B fighter (statistiche)
+    'b_avgsigstrlanded','b_avgsigstrpct','b_avgsubatt','b_avgtdlanded','b_avgtdpct',
+
+    # R fighter (dati generali)
+    'r_age','r_stance','r_heightcms','r_reachcms','r_weightlbs',
+
+    # R fighter (streak, record)
+    'r_currentlosestreak','r_currentwinstreak','r_draws','r_longestwinstreak','r_wins','r_losses',
+    'r_winsbyko','r_winsbysubmission','r_winsbytkodoctorstoppage','r_totalroundsfought','r_totaltitlebouts',
+
+    # R fighter (statistiche)
+    'r_avgsigstrlanded','r_avgsigstrpct','r_avgsubatt','r_avgtdlanded','r_avgtdpct'
+]
+
+# 1) Converti le date in datetime
+df1['date'] = pd.to_datetime(df1['date'], errors='coerce')
+df2['date'] = pd.to_datetime(df2['date'], errors='coerce')
+
+# 2) (Opzionale) Filtra df1 sul range di date desiderato
+start_date = '2010-03-21'
+end_date   = '2021-03-20'
+df1_sub = df1[(df1['date'] >= start_date) & (df1['date'] <= end_date)].copy()
+
+# 3) Crea una colonna "pk" in df2 e df1_sub per avere una chiave univoca
+df2['pk'] = (
+    df2['date'].astype(str) + "_" +
+    df2['r_fighter'].astype(str) + "_" +
+    df2['b_fighter'].astype(str)
+)
+
+df1_sub['pk'] = (
+    df1_sub['date'].astype(str) + "_" +
+    df1_sub['r_fighter'].astype(str) + "_" +
+    df1_sub['b_fighter'].astype(str)
+)
+
+# 4) Assegna i valori di df1_sub a df2.
+#    Per ogni colonna, creiamo un dizionario {pk: valore_di_df1}, e lo mappiamo su df2.
+#    In questo modo, df2[col] viene sovrascritto dai valori di df1_sub (anche se sono NaN).
+for col in columns_to_update:
+    if col in df1_sub.columns:
+        # costruiamo la mappatura pk -> valore (df1_sub)
+        map_dict = pd.Series(df1_sub[col].values, index=df1_sub['pk']).to_dict()
+        # assegniamo a df2 i valori corrispondenti
+        df2[col] = df2['pk'].map(map_dict)
+
+# 5) Rimuoviamo la colonna pk da df2, se non serve più
+df2.drop(columns='pk', inplace=True)
+
+# A questo punto, df2 è stato "forzato" con i valori di df1_sub,
+# sulle stesse righe (stessa chiave pk) e per le stesse date nel range
+
+
+start_date = '2010-03-21'
+end_date   = '2021-03-20'
+df2 = df2[(df2['date'] >= start_date) & (df2['date'] <= end_date)].copy()
+key_cols = ['r_fighter', 'b_fighter', 'date','winner'] 
 df = pd.merge(df1, df2, how='outer', on=columns)
 df = df.reindex(columns=ordered_cols)
 df = df.sort_values(by=["date","r_fighter"]).reset_index(drop=True)
 df.to_csv("df.csv",index = False)
-df1.to_csv('df1.csv',index = False)
-df2.to_csv('df2.csv',index = False)
+df1[columns].to_csv('df1.csv',index = False)
+df2[columns].to_csv('df2.csv',index = False)
+
+
+#df.drop_duplicates(subset=['date','r_fighter'], keep='first', inplace=True)
+#df.drop_duplicates(subset=['date','b_fighter'], keep='first', inplace=True)
+df_duplicatesr = df[df.duplicated(subset=['date', 'r_fighter','b_fighter'], keep=False)]
+df_duplicatesb = df[df.duplicated(subset=['date',  'b_fighter','b_fighter'], keep=False)]
+cols= ['r_fighter', 'b_fighter','date']
+df4 = df_duplicatesr[cols]
+df5 = df_duplicatesb[cols]
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
+
+print(df4,df5)
