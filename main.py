@@ -66,9 +66,6 @@ df2 = df2.rename(columns={'b_draw': 'b_draws', 'r_draw': 'r_draws','b_winbyko/tk
                           'r_winbysubmission': 'r_winsbysubmission',})
 
 
-
-columns = list(sorted(set(df1.columns.tolist()).intersection(df2.columns.tolist())))
-
 columns = [
     # -- FIGHT-LEVEL (data comune) --
     'r_fighter',
@@ -135,9 +132,7 @@ columns = [
     'r_avgtdlanded',
     'r_avgtdpct'
 ]
-df_final = pd.DataFrame()
 
-df_final['RedFighter'] = df1['r_fighter']
 
 ordered_cols = [
     # 1. Info generali evento
@@ -221,21 +216,113 @@ ordered_cols = [
     'totaltitleboutdif', 'windif', 'winstreakdif'
 ]
 
+df = pd.DataFrame(columns=ordered_cols)
+
 df1 = df1.sort_values(by=["date","r_fighter"]).reset_index(drop=True)
 df2 = df2.sort_values(by=["date","r_fighter"]).reset_index(drop=True)
 
 df1.drop(columns=('country'))
 
-df = pd.DataFrame(columns=ordered_cols)
-
 # Convertiamo tutte le colonne 'int' in float
 for col in df1.select_dtypes(include='int'):
     df1[col] = df1[col].astype(float)
+    
+for col in df1.select_dtypes(include='object'):
+    df1[col] = df1[col].fillna('').astype(str)
+for col in df2.select_dtypes(include='object'):
+    df2[col] = df2[col].fillna('').astype(str)
+    
+df1 = df1.round(2)
+df2 = df2.round(2)
 
+name_map = {
+    "Quinton Jackson": "Rampage Jackson",
+    "Mirko Cro Cop": "Mirko Filipovic",
+    "Antonio Rodrigo Nogueira": "Minotauro Nogueira",
+    "Tiequan Zhang": "Zhang Tiequan",
+    "Constantinos Philippou": "Costas Philippou",
+    "Ben Alloway": "Benny Alloway",
+    "Bubba McDaniel": "Robert McDaniel",
+    "William Macario": "William Patolino",
+    "Brad Scott": "Bradley Scott",
+    "Rafael Cavalcante": "Rafael Feijao",
+    "Josh Sampo": "Joshua Sampo",
+    "Junior Hernandez": "Ramiro Hernandez",
+    "Edimilson Souza": "Kevin Souza",
+    "An Ying Wang": "Anying Wang",
+    "Guangyou Ning": "Ning Guangyou",
+    "Nicholas Musoke": "Nico Musoke",
+    "Juan Manuel Puig": "Juan Puig",
+    "Emily Kagan": "Emily Peters Kagan",
+    "Tiago Trator": "Tiago dos Santos e Silva",
+    "Roldan Sangcha'an": "Roldan Sangcha-an",
+    "Wendell Oliveira": "Wendell Oliveira Marques",
+    "Rob Whiteford": "Robert Whiteford",
+    "Glaico Franca": "Glaico Franca Moreira",
+    "Bruno Korea": "Bruno Rodrigues",
+    "Seo Hee Ham": "Seohee Ham",
+    "Tim Johnson": "Timothy Johnson",
+    "Joe Gigliotti": "Joseph Gigliotti",
+    "Alvaro Herrera": "Alvaro Herrera Mendoza",
+    "Cris Cyborg": "Cristiane Justino",
+    "Marco Polo Reyes": "Polo Reyes",
+    "Ulka Sasaki": "Yuta Sasaki",
+    "Da Un Jung": "Da-Un Jung",
+    "Caludio Puelles": "Claudio Puelles",
+    "Raphael Pessoa": "Raphael Pessoa Nunes",
+    "Alekander Volkov": "Alexander Volkov",
+    "Grigorii Popov": "Grigory Popov",
+    "Peter Yan": "Petr Yan",
+    "Jun Yong Park": "Junyong Park",
+    "SeungWoo Choi": "Seungwoo Choi",
+    "Jim Crute": "Jimmy Crute",
+    "Kai Kara France": "Kai Kara-France",
+    "Batgerel Danaa": "Danaa Batgerel",
+    "Weili Zhang": "Zhang Weili",
+    "Elizeu Dos Santos": "Elizeu Zaleski dos Santos",
+    "Bibulatov Magomed": "Magomed Bibulatov",
+    "Aleksandra Albu": "Alexandra Albu",
+    "Caludia Gadelha": "Claudia Gadelha",
+    "Germaine De Randamie": "Germaine de Randamie",
+    "Eduardo Garagorri": "Luiz Garagorri",
+    "Vicente Luque": "Vincente Luque",
+    "Vernon Ramos": "Vernon Ramos Ho",
+    "Robert Sanchez": "Roberto Sanchez",
+    "Liu Pingyuan": "Pingyuan Liu",
+    "Jun Yong Park": "Junyong Park",
+    "Rodolfo Rubio": "Rodolfo Rubio Perez",
+    "Humberto Brown": "Humberto Brown Morrison",
+    "Heather Clark": "Heather Jo Clark",
+    "Leonardo Augusto Leleco": "Leonardo Guimaraes",
+    "Alessandro Ricci": "Alex Ricci",
+    "Jim Wallhead": "Jimmy Wallhead",
+    "Chan-Mi Jeon": "Chanmi Jeon",
+    "Azunna Anyanwu": "Zu Anyanwu",
+    "Carlo Pedersoli": "Carlo Pedersoli Jr.",
+    "Anthony Rocco Martin": "Rocco Martin",
+    "Krzystof Jotko": "Krzysztof Jotko",
+    "Derrick": "Derrick Krantz",
+    "Inoue Mizuki": "Mizuki Inoue",
+    "Don'Tale Mayes": "Don'tale Mayes",
+    "Isabela De Pauda": "Isabela de Padua",
+    "Omar Antonio Morales Ferrer": "Omar Morales",
+    "Ode Obsourne": "Ode Osbourne",
+    "Luci Pudilova": "Lucie Pudilova",
+    "Kalinn Williams": "Khaos Williams",
+    "Youssef Zalal": "Youssef Zalel",
+    "Marcos Rogerio De Lima": "Marcos Rogerio de Lima",
+    "Josh Culibao": "Joshua Culibao",
+    "Zhalgas Zhamagulov": "Zhalgas Zhumagulov",
+    "Ali AlQaisi": "Ali Qaisi",
+    "Alex Munoz": "Alexander Munoz",
+    "Phil Hawes": "Phillip Hawes"
+}
 
-# Convertiamo tutte le colonne 'int' in float
-for col in df2.select_dtypes(include='int'):
-    df2[col] = df2[col].astype(float)
+df1['r_fighter'] = df1['r_fighter'].replace(name_map)
+df1['b_fighter'] = df1['b_fighter'].replace(name_map)
+df2['b_fighter'] = df2['b_fighter'].replace(name_map)
+df2['r_fighter'] = df2['r_fighter'].replace(name_map)
+
 
 columns_to_update = [
     # Fight-level
@@ -267,9 +354,10 @@ df1['date'] = pd.to_datetime(df1['date'], errors='coerce')
 df2['date'] = pd.to_datetime(df2['date'], errors='coerce')
 
 # 2) (Opzionale) Filtra df1 sul range di date desiderato
-start_date = '2010-03-21'
-end_date   = '2021-03-20'
-df1_sub = df1[(df1['date'] >= start_date) & (df1['date'] <= end_date)].copy()
+#start_date = '2010-03-21'
+#end_date   = '2021-03-20'
+#df2 = df2[(df2['date'] >= start_date) & (df2['date'] <= end_date)].copy()
+#df1 = df1[(df1['date'] >= start_date) & (df1['date'] <= end_date)].copy()
 
 # 3) Crea una colonna "pk" in df2 e df1_sub per avere una chiave univoca
 df2['pk'] = (
@@ -278,19 +366,19 @@ df2['pk'] = (
     df2['b_fighter'].astype(str)
 )
 
-df1_sub['pk'] = (
-    df1_sub['date'].astype(str) + "_" +
-    df1_sub['r_fighter'].astype(str) + "_" +
-    df1_sub['b_fighter'].astype(str)
+df1['pk'] = (
+    df1['date'].astype(str) + "_" +
+    df1['r_fighter'].astype(str) + "_" +
+    df1['b_fighter'].astype(str)
 )
 
 # 4) Assegna i valori di df1_sub a df2.
 #    Per ogni colonna, creiamo un dizionario {pk: valore_di_df1}, e lo mappiamo su df2.
 #    In questo modo, df2[col] viene sovrascritto dai valori di df1_sub (anche se sono NaN).
 for col in columns_to_update:
-    if col in df1_sub.columns:
+    if col in df1.columns:
         # costruiamo la mappatura pk -> valore (df1_sub)
-        map_dict = pd.Series(df1_sub[col].values, index=df1_sub['pk']).to_dict()
+        map_dict = pd.Series(df1[col].values, index=df1['pk']).to_dict()
         # assegniamo a df2 i valori corrispondenti
         df2[col] = df2['pk'].map(map_dict)
 
@@ -301,26 +389,17 @@ df2.drop(columns='pk', inplace=True)
 # sulle stesse righe (stessa chiave pk) e per le stesse date nel range
 
 
-start_date = '2010-03-21'
-end_date   = '2021-03-20'
-df2 = df2[(df2['date'] >= start_date) & (df2['date'] <= end_date)].copy()
-key_cols = ['r_fighter', 'b_fighter', 'date','winner'] 
+
+key_cols = ['r_fighter', 'b_fighter', 'date'] 
 df = pd.merge(df1, df2, how='outer', on=columns)
 df = df.reindex(columns=ordered_cols)
 df = df.sort_values(by=["date","r_fighter"]).reset_index(drop=True)
+
+
 df.to_csv("df.csv",index = False)
 df1[columns].to_csv('df1.csv',index = False)
 df2[columns].to_csv('df2.csv',index = False)
 
 
-#df.drop_duplicates(subset=['date','r_fighter'], keep='first', inplace=True)
-#df.drop_duplicates(subset=['date','b_fighter'], keep='first', inplace=True)
-df_duplicatesr = df[df.duplicated(subset=['date', 'r_fighter','b_fighter'], keep=False)]
-df_duplicatesb = df[df.duplicated(subset=['date',  'b_fighter','b_fighter'], keep=False)]
-cols= ['r_fighter', 'b_fighter','date']
-df4 = df_duplicatesr[cols]
-df5 = df_duplicatesb[cols]
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
-
-print(df4,df5)
