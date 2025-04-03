@@ -14,14 +14,15 @@ fights_col = ['r_fighter','b_fighter','date', 'location', 'referee', 'winner', '
     'numberofrounds', 'emptyarena', 'totalfighttimesecs', 'betterrank','agedif', 'avgsubattdif', 'avgtddif', 
     'heightdif', 'kodif', 'longestwinstreakdif',
     'losestreakdif', 'lossdif', 'reachdif', 'sigstrdif', 'subdif', 'totalrounddif',
-    'totaltitleboutdif', 'windif', 'winstreakdif'
+    'totaltitleboutdif', 'windif', 'winstreakdif',   'b_odds', 'b_decodds', 'b_subodds', 'b_koodds', 'b_expectedvalue',
+    'r_odds', 'r_decodds', 'r_subodds', 'r_koodds', 'r_expectedvalue',
 ]
 
 
 r_fighters_col = [
     # 3a. Red Fighter (info generali)
-    'r_fighter', 'date','r_age' ,'r_stance', 'r_heightcms', 'r_reachcms', 'r_weightlbs',
-    'r_odds', 'r_decodds', 'r_subodds', 'r_koodds', 'r_expectedvalue',
+    'r_fighter', 'date','gender','r_age' ,'r_stance', 'r_heightcms', 'r_reachcms', 'r_weightlbs',
+   
 
     # 3b. Red Fighter (streak)
     'r_currentwinstreak', 'r_currentlosestreak', 'r_longestwinstreak', 'r_losses',
@@ -31,6 +32,8 @@ r_fighters_col = [
     'r_winbydecisionmajority', 'r_winbydecisionsplit', 'r_winbydecisionunanimous', 
     'r_winsbydecisionmajority', 'r_winsbydecisionsplit', 'r_winsbydecisionunanimous',
     'r_winsbyko', 'r_winsbysubmission', 'r_winsbytkodoctorstoppage',
+        # 3e. Red Fighter (tempo e round)
+    'r_totaltimefought(seconds)', 'r_totalroundsfought', 'r_totaltitlebouts',
 
     # 3d. Red Fighter (statistiche avanzate)
     'r_avgkd', 'r_avgoppkd', 'r_avgsigstratt', 'r_avgsigstrlanded', 'r_avgsigstrpct',
@@ -45,8 +48,6 @@ r_fighters_col = [
     'r_avggroundatt', 'r_avggroundlanded', 'r_avgoppgroundatt', 'r_avgoppgroundlanded',
     'r_avgctrltime(seconds)', 'r_avgoppctrltime(seconds)',
 
-    # 3e. Red Fighter (tempo e round)
-    'r_totaltimefought(seconds)', 'r_totalroundsfought', 'r_totaltitlebouts',
 
     # 3f. Red Fighter (rank ecc.)
     'r_matchwcrank', 'r_bantamweightrank', 'r_featherweightrank', 'r_flyweightrank',
@@ -56,17 +57,16 @@ r_fighters_col = [
 ]
 
 b_fighters_col = [
-    'b_fighter','date', 'b_age', 'b_stance', 'b_heightcms', 'b_reachcms', 'b_weightlbs', 
-    'b_odds', 'b_decodds', 'b_subodds', 'b_koodds', 'b_expectedvalue',
-
-    # 2b. Blue Fighter (streak)
+    'b_fighter','date','gender', 'b_age', 'b_stance', 'b_heightcms', 'b_reachcms', 'b_weightlbs', 
+    
     'b_currentwinstreak', 'b_currentlosestreak', 'b_longestwinstreak', 'b_losses', 
     'b_draws', 'b_wins',
 
-    # 2c. Blue Fighter (tipi di vittoria)
     'b_winbydecisionmajority', 'b_winbydecisionsplit', 'b_winbydecisionunanimous', 
     'b_winsbydecisionmajority', 'b_winsbydecisionsplit', 'b_winsbydecisionunanimous', 
     'b_winsbyko', 'b_winsbysubmission', 'b_winsbytkodoctorstoppage',
+
+    'b_totaltimefought(seconds)', 'b_totalroundsfought', 'b_totaltitlebouts',
 
     # 2d. Blue Fighter (statistiche avanzate)
     'b_avgkd', 'b_avgoppkd', 'b_avgsigstratt', 'b_avgsigstrlanded', 'b_avgsigstrpct',
@@ -80,9 +80,6 @@ b_fighters_col = [
     'b_avgclinchatt', 'b_avgclinchlanded', 'b_avgoppclinchatt', 'b_avgoppclinchlanded',
     'b_avggroundatt', 'b_avggroundlanded', 'b_avgoppgroundatt', 'b_avgoppgroundlanded',
     'b_avgctrltime(seconds)', 'b_avgoppctrltime(seconds)',
-
-    # 2e. Blue Fighter (tempo e round)
-    'b_totaltimefought(seconds)', 'b_totalroundsfought', 'b_totaltitlebouts',
 
     # 2f. Blue Fighter (rank ecc.)
     'b_matchwcrank', 'b_bantamweightrank', 'b_featherweightrank', 'b_flyweightrank',
