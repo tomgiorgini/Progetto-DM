@@ -1,5 +1,18 @@
+-- PostgreSQL warehouse initialization.
+-- Run from the repository root so psql can resolve data/processed/fights.csv.
+
+BEGIN;
+
+DROP TABLE IF EXISTS public.fact_fight CASCADE;
+DROP TABLE IF EXISTS public.dim_fighter CASCADE;
+DROP TABLE IF EXISTS public.dim_finish CASCADE;
+DROP TABLE IF EXISTS public.dim_type CASCADE;
+DROP TABLE IF EXISTS public.dim_event CASCADE;
+DROP TABLE IF EXISTS public.dim_date CASCADE;
+DROP TABLE IF EXISTS public.staging_fight CASCADE;
+
 -- ============================================================
--- 1) STAGING TABLE 
+-- 1) STAGING TABLE
 -- ============================================================
 CREATE TABLE public.staging_fight (
   r_name                     TEXT,
@@ -56,13 +69,13 @@ CREATE TABLE public.staging_fight (
   b_champion                 BOOLEAN
 );
 
+-- ============================================================
+-- CSV LOADING
+-- ============================================================
+\copy public.staging_fight FROM 'data/processed/fights.csv' WITH (FORMAT csv, HEADER true, DELIMITER ',', QUOTE '"')
+
 ALTER TABLE public.staging_fight
   ADD COLUMN stg_id SERIAL PRIMARY KEY;
-
--- ============================================================
--- PSQL LOADING 
--- ============================================================
---\copy public.staging_fight(r_name,b_name,event,date,month,year,gender,city,state,country,referee,winner,finish,finishdetails,finishround,titlebout,weightclass,numberofrounds,emptyarena,heightdif,agedif,reachdif,r_odds,r_age,r_age_range,r_stance, b_odds,b_age,b_age_range,b_stance,r_avgkd,r_avgsigstratt,r_avgsigstrlanded,r_avgtdatt,r_avgtdlanded,r_avgsubatt,"r_avgctrltime(seconds)",b_avgkd,b_avgsigstratt,b_avgsigstrlanded,b_avgtdatt,b_avgtdlanded,b_avgsubatt,"b_avgctrltime(seconds)",r_undefeated,b_undefeated,r_wc_ranked,r_pfp_ranked,b_wc_ranked,b_pfp_ranked,r_champion,b_champion) FROM '/Users/tommaso/Documents/GitHub/Progetto-DM/df_common.csv' WITH (FORMAT csv, HEADER true, DELIMITER ',', QUOTE '"');
 
 -- ============================================================
 -- 2) DIMENSIONS
@@ -271,3 +284,12 @@ FROM (
   ORDER BY stg_id
 ) x
 ORDER BY fight_key;
+
+ALTER TABLE public.fact_fight ADD PRIMARY KEY (fight_key);
+CREATE INDEX fact_fight_date_idx ON public.fact_fight(date_key);
+CREATE INDEX fact_fight_event_idx ON public.fact_fight(event_key);
+CREATE INDEX fact_fight_finish_idx ON public.fact_fight(finish_key);
+CREATE INDEX fact_fight_red_fighter_idx ON public.fact_fight(red_fighter_key);
+CREATE INDEX fact_fight_blue_fighter_idx ON public.fact_fight(blue_fighter_key);
+
+COMMIT;

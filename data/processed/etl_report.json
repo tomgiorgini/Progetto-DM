@@ -1,0 +1,15 @@
+{
+  "source_rows": {
+    "betting": 6528,
+    "statistics": 6012,
+    "events": 683
+  },
+  "output_rows": 4628,
+  "output_columns": 52,
+  "date_range": [
+    "2010-03-21",
+    "2021-03-20"
+  ],
+  "swapped_corner_rows": 6,
+  "aligned_name_rows": 212
+}

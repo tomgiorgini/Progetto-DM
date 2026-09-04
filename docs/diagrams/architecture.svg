@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650" role="img" aria-labelledby="title desc">
+  <title id="title">UFC data warehouse architecture</title>
+  <desc id="desc">Three raw datasets flow through a Python ETL into an integrated fight table and a PostgreSQL star schema used by analytical SQL queries.</desc>
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#111827" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#64748b"/>
+    </marker>
+    <style>
+      .title{font:700 30px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#111827}
+      .subtitle{font:400 15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#64748b}
+      .label{font:700 17px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#111827}
+      .small{font:400 13px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#475569}
+      .white{font:700 18px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#fff}
+      .mono{font:500 12px ui-monospace,SFMono-Regular,Menlo,monospace;fill:#475569}
+      .arrow{stroke:#64748b;stroke-width:3;fill:none;marker-end:url(#arrow)}
+    </style>
+  </defs>
+
+  <rect width="1200" height="650" rx="20" fill="#f8fafc"/>
+  <text x="55" y="58" class="title">UFC Data Warehouse</text>
+  <text x="55" y="86" class="subtitle">Source integration, dimensional modelling and OLAP-style analysis</text>
+
+  <g filter="url(#shadow)">
+    <rect x="55" y="145" width="210" height="88" rx="12" fill="#fff" stroke="#cbd5e1"/>
+    <rect x="55" y="257" width="210" height="88" rx="12" fill="#fff" stroke="#cbd5e1"/>
+    <rect x="55" y="369" width="210" height="88" rx="12" fill="#fff" stroke="#cbd5e1"/>
+  </g>
+  <text x="82" y="178" class="label">Betting &amp; rankings</text>
+  <text x="82" y="204" class="mono">data/raw/d1.csv</text>
+  <text x="82" y="290" class="label">Fight statistics</text>
+  <text x="82" y="316" class="mono">data/raw/d2.csv</text>
+  <text x="82" y="402" class="label">Event catalogue</text>
+  <text x="82" y="428" class="mono">data/raw/d3.csv</text>
+
+  <path d="M265 189 H330 V270" class="arrow"/>
+  <path d="M265 301 H330" class="arrow"/>
+  <path d="M265 413 H330 V332" class="arrow"/>
+
+  <g filter="url(#shadow)">
+    <rect x="345" y="210" width="245" height="182" rx="16" fill="#8b1e2d"/>
+  </g>
+  <text x="467" y="252" text-anchor="middle" class="white">Python ETL</text>
+  <text x="375" y="286" class="small" fill="#fff" style="fill:#fef2f2">• normalize source schemas</text>
+  <text x="375" y="314" class="small" fill="#fff" style="fill:#fef2f2">• reconcile corners &amp; names</text>
+  <text x="375" y="342" class="small" fill="#fff" style="fill:#fef2f2">• derive analytical features</text>
+  <text x="375" y="370" class="small" fill="#fff" style="fill:#fef2f2">• validate rows and columns</text>
+
+  <path d="M590 301 H675" class="arrow"/>
+  <g filter="url(#shadow)">
+    <rect x="690" y="247" width="205" height="108" rx="14" fill="#fff" stroke="#8b1e2d" stroke-width="2"/>
+  </g>
+  <text x="792" y="283" text-anchor="middle" class="label">Integrated fights</text>
+  <text x="792" y="310" text-anchor="middle" class="mono">4,628 rows · 52 fields</text>
+  <text x="792" y="335" text-anchor="middle" class="small">2010–2021</text>
+
+  <path d="M895 301 H965" class="arrow"/>
+  <g filter="url(#shadow)">
+    <rect x="980" y="245" width="165" height="112" rx="56" fill="#111827"/>
+  </g>
+  <text x="1062" y="294" text-anchor="middle" class="white">PostgreSQL</text>
+  <text x="1062" y="322" text-anchor="middle" class="small" style="fill:#e2e8f0">star schema</text>
+
+  <path d="M1062 357 V420" class="arrow"/>
+  <rect x="914" y="435" width="296" height="140" rx="14" fill="#fff" stroke="#cbd5e1" filter="url(#shadow)"/>
+  <text x="1062" y="468" text-anchor="middle" class="label">Analytical layer</text>
+  <text x="942" y="500" class="small">• underdog upset rates</text>
+  <text x="942" y="527" class="small">• rank and stance segments</text>
+  <text x="942" y="554" class="small">• finish and physical differences</text>
+
+  <rect x="355" y="470" width="430" height="105" rx="14" fill="#fff" stroke="#cbd5e1"/>
+  <text x="382" y="504" class="label">Dimensional model</text>
+  <text x="382" y="533" class="small">fact_fight → date · event · type · finish · fighters</text>
+  <text x="382" y="558" class="mono">sql/01_schema.sql + sql/02_analytics.sql</text>
+  <path d="M792 355 V414 H570 V470" class="arrow"/>
+</svg>

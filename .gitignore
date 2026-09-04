@@ -1,0 +1,10 @@
+.DS_Store
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+data/processed/betting_clean.csv
+data/processed/statistics_clean.csv

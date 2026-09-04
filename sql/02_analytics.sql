@@ -34,7 +34,8 @@ WHERE f.winner IN ('Red','Blue')
 
 SELECT *
 FROM tmp_a2_upset_per_fight
-ORDER BY country, numberofrounds;
+ORDER BY country, numberofrounds
+LIMIT 25;
 
 
 
@@ -285,4 +286,3 @@ HAVING COUNT(*) >= 5;
 SELECT *
 FROM tmp_a4_sub_details_drilldown
 ORDER BY fights DESC, finishdetails;
-
